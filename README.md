@@ -8,17 +8,27 @@
 #### Boot
 > On boot, we will have the slave (LED controller) listen for an initial request from the master (switch controller) over I2C to ensure that both are communicating correctly. The slave should blink in a special pattern following receipt of the initial request to prove that a connection has been established (if the slave controls the LCD we could also blink the LCD screen). The master will not proceed until it has received a response.
 #### I2C Message Format
+<<<<<<< HEAD
 > Bitmask using a byte: Upper 3 bits as action: 000  Lower 5 bits as data: 00000
 > Event Bits 8-6: 111 -> Master in Error State    101 -> Reset Game 	 001 -> Toggle LED in Data    010 - > Boot    011 -> Game Win
 > Data Bits 5-1
+=======
+> Bitmap using a byte. Upper 3 bits as action, lower 5 bits as data.
+##### Event Bits 8-6: 
+* 111 -> Master in Error State 	
+* 101 -> Reset Game
+* 001 -> Toggle LED in Data
+##### Data Bits 5-1:  
+>>>>>>> 6686448ad865019762ac7519968681d1045cea49
 
 #### Basic Control Flow
-##### Master				I2C			Slave
-1. Reset game. GOTO 2.		101XXXXX	Reset game. GOTO 2.
-2. Get input. GOTO 3.		001XXXXX	Display output. GOTO 3.
-3. Is Win?								Check for avaliable I2C.
-* Yes. Notify. GOTO 1.		101			Inform user (blink). GOTO 1.
-* No. GOTO 2.							GOTO 2.
+\# | Master | I2C | Slave
+--- | --- | --- | ---  
+1 | Reset game. GOTO 2. | 101XXXXX | Reset game. GOTO 2.
+2 | Get input. GOTO 3. | 001XXXXX | Display output. GOTO 3.
+3 | Is Win?	| | Check for avaliable I2C.
+3a | Yes. Notify. GOTO 1. | 101 | Inform user (blink). GOTO 1.
+3b | No. GOTO 2.| | GOTO 2.
 > Error states deviate from this control flow.
 
 #### Exception Handling
