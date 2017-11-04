@@ -6,7 +6,6 @@
 
 
 MasterController::MasterController() {
-    Wire.begin(); // Address not needed for master?
 
 }
 

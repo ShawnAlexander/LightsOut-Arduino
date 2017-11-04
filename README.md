@@ -8,9 +8,9 @@
 #### Boot
 > On boot, we will have the slave (LED controller) listen for an initial request from the master (switch controller) over I2C to ensure that both are communicating correctly. The slave should blink in a special pattern following receipt of the initial request to prove that a connection has been established (if the slave controls the LCD we could also blink the LCD screen). The master will not proceed until it has received a response.
 #### I2C Message Format
-> Bitmap using a byte: Upper 3 bits as action: 000  Lower 5 bits as data: 00000
-> Event Bits 8-6: 111 -> Master in Error State 	101 -> Reset Game 	 001 -> Toggle LED in Data
-> Data Bits 5-1:  
+> Bitmask using a byte: Upper 3 bits as action: 000  Lower 5 bits as data: 00000
+> Event Bits 8-6: 111 -> Master in Error State    101 -> Reset Game 	 001 -> Toggle LED in Data    010 - > Boot    011 -> Game Win
+> Data Bits 5-1
 
 #### Basic Control Flow
 ##### Master				I2C			Slave
@@ -25,6 +25,4 @@
 > AVR-GCC compiles with ```-fno-exceptions``` so we have to implement our own form of error handling.
 
 
-### TO-DO:
-- [ ] Insert shit here.
-- [X] Done.
+### NOTES:
