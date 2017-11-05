@@ -10,15 +10,10 @@
 class MasterController {
     public:
         MasterController();
-        int randomize();
-        bool isWin();
+        
 
     private:
-        bool BOARD[5][5] = {{false, false, false, false, false},
-                           {false, false, false, false, false},
-                           {false, false, false, false, false},
-                           {false, false, false, false, false},
-                           {false, false, false, false, false}};
+        
 
 
 
