@@ -5,7 +5,7 @@ KeypadWrapper::KeypadWrapper() {
 }
 
 KeypadWrapper::KeypadWrapper(byte *rpins, byte *cpins) {
-    for (uint8_t i = 0; i < 5; ++i) {
+    for (byte i = 0; i < 5; ++i) {
         ROW_PINS[i] = rpins[i];
         COL_PINS[i] = cpins[i];
     }
