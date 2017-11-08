@@ -14,6 +14,14 @@
 
 #include <Arduino.h>
 
+#ifdef DEBUG	/* For my linux environment. */
+#include <iostream>
+#include <cstdint>
+typedef uint8_t byte;
+#endif
+
+#ifdef DEBUG_ARDUINO
+#endif
 
 class Board {
 	public:
@@ -30,6 +38,13 @@ class Board {
 	    bool add(bool, bool);
 	    bool multiply(bool, bool);
 	    bool dot(bool[][COLS], bool[][COLS]);
+
+	    #ifdef DEBUG
+	    void printConsole();
+	    #endif
+	    #ifdef DEBUG_ARDUINO
+	    void printSerial();
+	    #endif
 
 
 	private:

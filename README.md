@@ -25,3 +25,4 @@
 
 
 ### NOTES:
+- To use debug code, compile with ```-DDEBUG```
