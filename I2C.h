@@ -1,8 +1,8 @@
+
 #ifndef I2C_COMM_H
 #define I2C_COMM_H
 
-#include <cinttypes>
-#include "Wire.h"
+#include <Wire.h>
 
 
 /*
@@ -16,7 +16,7 @@
 */
 
 
-enum EVENT : uint8_t {
+enum EVENT : byte {
 	/* THE EVENTS LISTED HERE MAP THE ENTIRE BYTE */
 
 	/* TOGGLE EVENTS */
@@ -61,9 +61,10 @@ enum EVENT : uint8_t {
 	ERROR = 224
 };
 
+
 class I2C_Slave {
 	public:
-		const uint8_t SLAVE_ADDR = 27;
+		const byte SLAVE_ADDR = 27;
 
 		/* Slave constructor (calls setup routines) 
 		   Uses internal callback */
@@ -84,7 +85,7 @@ class I2C_Slave {
 
 class I2C_Master {
 	public:
-		const uint8_t SLAVE_ADDR = 27;
+		const byte SLAVE_ADDR = 27;
 
 		/* Master constructor (calls setup routines) */
 		I2C_Master();

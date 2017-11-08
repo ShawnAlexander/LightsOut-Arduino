@@ -28,7 +28,6 @@ void I2C_Slave::callback(int numBytes) {
 
 I2C_Master::I2C_Master() {
 	Wire.begin();
-	
 }
 
 void I2C_Master::write(EVENT e) {

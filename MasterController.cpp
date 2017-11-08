@@ -8,7 +8,3 @@
 MasterController::MasterController() {
 
 }
-
-int MasterController::randomize() {
-
-}

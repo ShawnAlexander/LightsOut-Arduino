@@ -6,6 +6,9 @@
 #ifndef MASTERCONTROLLER_H
 #define MASTERCONTROLLER_H
 
+#include "I2C.h"
+#include "Board.h"
+#include "KeypadWrapper.h"
 
 class MasterController {
     public:
