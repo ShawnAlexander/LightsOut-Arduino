@@ -12,15 +12,14 @@
 #ifndef BOARD_LIGHTSOUT_H
 #define BOARD_LIGHTSOUT_H
 
-#include <Arduino.h>
-
-#ifdef DEBUG	/* For my linux environment. */
+#ifdef DEBUG	/* For desktop environments. */
 #include <iostream>
 #include <cstdint>
 typedef uint8_t byte;
 #endif
 
 #ifdef DEBUG_ARDUINO
+#include <Arduino.h>
 #endif
 
 class Board {

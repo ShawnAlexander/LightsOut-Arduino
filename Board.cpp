@@ -201,3 +201,17 @@ void Board::toggle(byte gridNum) {
 
 	toggle(row, col);
 }
+
+void Board::printConsole() {
+	for(byte i = 0; i < ROWS; ++i){
+		for(byte j = 0; j < COLS; ++j){
+			std::cout << "|";
+			if(GAME_BOARD[i][j]){
+				std::cout << " ON";
+			}else {
+				std::cout << "OFF";
+			}
+		}
+		std::cout << "|" << std::endl;
+	}
+}
