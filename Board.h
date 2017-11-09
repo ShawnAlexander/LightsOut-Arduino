@@ -12,10 +12,16 @@
 #ifndef BOARD_LIGHTSOUT_H
 #define BOARD_LIGHTSOUT_H
 
-#ifdef DEBUG	/* For desktop environments. */
 #include <iostream>
 #include <cstdint>
+#include <random>
+#include <chrono>
+
 typedef uint8_t byte;
+
+#ifdef DEBUG_ENV	/* For desktop environments. */
+#include <iostream>
+#include <cstdint>
 #endif
 
 #ifdef DEBUG_ARDUINO
@@ -26,7 +32,7 @@ class Board {
 	public:
 		static const byte ROWS = 5;
 		static const byte COLS = 5;
-		Board();
+		//Board();
 		void randomize();
 		void set(byte, bool);	/* Sets 1-indexed grid number to true/false without toggling adjacent squares */
 		void set(byte, byte, bool); /* Sets 0-indexed row & col to true/false without toggling adjacent squares */
@@ -36,11 +42,11 @@ class Board {
 	    bool isSolvable();
 	    bool add(bool, bool);
 	    bool multiply(bool, bool);
-	    bool dot(bool[][COLS], bool[][COLS]);
+		bool dot(bool(&)[ROWS][COLS], const bool(&)[ROWS][COLS]);
 
-	    #ifdef DEBUG
+		//#ifdef DEBUG_ENV
 	    void printConsole();
-	    #endif
+	    //#endif
 	    #ifdef DEBUG_ARDUINO
 	    void printSerial();
 	    #endif

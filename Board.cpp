@@ -1,11 +1,21 @@
 #include "Board.h"
-
+/*
 Board::Board() {
 
-}
+}*/
 
 void Board::randomize() {
-	
+	/* Bernoulli - 50% chance for each */
+	std::default_random_engine generator;
+	std::bernoulli_distribution distribution(0.5);
+
+	for(byte i = 1; i < (byte) 26; ++i) {
+		if(distribution(generator)){
+			set(i, true);
+		}
+	}
+
+	//long seed = std::chrono::system_clock::now().time_since_epoch().count();
 }
 
 bool Board::isWin() {
@@ -48,7 +58,7 @@ bool Board::multiply(bool p1, bool p2) {
 	}
 }
 
-bool Board::dot(bool g1[][COLS], bool g2[][COLS]) {
+bool Board::dot(bool (&g1)[ROWS][COLS], const bool (&g2)[ROWS][COLS]) {
 	bool temp[ROWS][COLS] = {{false, false, false, false, false},
 	           			  {false, false, false, false, false},
 	           			  {false, false, false, false, false},
@@ -68,6 +78,7 @@ bool Board::dot(bool g1[][COLS], bool g2[][COLS]) {
     }
     return result;
 }
+
 
 /* True if board is solvable, false if not. */
 bool Board::isSolvable() {
