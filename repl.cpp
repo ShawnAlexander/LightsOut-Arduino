@@ -46,8 +46,27 @@ int main(int argc, char **argv) {
                 }
                 else if(c == 'n') {
                     cout << "New Game!" << endl;
-                    gb.randomize();
-                    gb.printConsole();
+                    cout << "Randomization Choice?" << endl;
+                    cin.getline(buffer, 1);
+                    if(isdigit(buffer[0])) {
+                        int n = atoi(buffer);
+                        if(n == 1) {
+                            gb.reset();
+                            gb.randomize(1);
+                            gb.printConsole();
+                        }
+                        else if(n == 2) {
+                            gb.reset();
+                            gb.randomize(2);
+                            gb.printConsole();
+                        }
+                        else {
+                            cout << "Error! Invalid input!" << endl;
+                        }
+                    }
+                    else {
+                        cout << "Error! Invalid input!" << endl;
+                    }
                 }
                 else if(c == 'i'){
                     if(gb.isSolvable()) {

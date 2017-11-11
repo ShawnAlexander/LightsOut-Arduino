@@ -25,7 +25,7 @@ class Board {
 		static const byte ROWS = 5;
 		static const byte COLS = 5;
 		//Board();
-		void randomize();
+		void randomize(int);
 		void set(byte, bool);	/* Sets 1-indexed grid number to true/false without toggling adjacent squares */
 		void set(byte, byte, bool); /* Sets 0-indexed row & col to true/false without toggling adjacent squares */
 		void toggle(byte, byte);	/* Toggle by 0-indexed row and col */
@@ -35,6 +35,7 @@ class Board {
 	    bool add(bool, bool);
 	    bool multiply(bool, bool);
 		bool dot(bool(&)[ROWS][COLS], const bool(&)[ROWS][COLS]);
+        void reset();
 
 	    void printConsole();
 	    void printSerial();

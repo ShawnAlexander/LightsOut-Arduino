@@ -4,18 +4,35 @@ Board::Board() {
 
 }*/
 
-void Board::randomize() {
+void Board::randomize(int choice) {
 	/* Bernoulli - 50% chance for each */
-	std::default_random_engine generator;
-	std::bernoulli_distribution distribution(0.5);
+    std::default_random_engine generator;
+    if(choice == 1) {
+        std::bernoulli_distribution distribution(0.5);
+        for (byte i = 1; i < (byte) 26; ++i) {
+            if (distribution(generator)) {
+                set(i, true);
+            }
+        }
+    }
+    else if(choice == 2) {
+        std::uniform_int_distribution<int> distribution(0,24);
+        int rounds = distribution(generator);
 
-	for(byte i = 1; i < (byte) 26; ++i) {
-		if(distribution(generator)){
-			set(i, true);
-		}
-	}
+    }
+    else if(choice == 3) {
+
+    }
 
 	//long seed = std::chrono::system_clock::now().time_since_epoch().count();
+}
+
+void Board::reset() {
+    for(byte row = 0; row < ROWS; ++row) {
+        for(byte col = 0; col < COLS; ++col) {
+            GAME_BOARD[row][col] = false;
+        }
+    }
 }
 
 bool Board::isWin() {
