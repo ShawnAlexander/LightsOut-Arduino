@@ -19,14 +19,6 @@
 
 typedef uint8_t byte;
 
-#ifdef DEBUG_ENV	/* For desktop environments. */
-#include <iostream>
-#include <cstdint>
-#endif
-
-#ifdef DEBUG_ARDUINO
-#include <Arduino.h>
-#endif
 
 class Board {
 	public:
@@ -44,15 +36,10 @@ class Board {
 	    bool multiply(bool, bool);
 		bool dot(bool(&)[ROWS][COLS], const bool(&)[ROWS][COLS]);
 
-		//#ifdef DEBUG_ENV
 	    void printConsole();
-	    //#endif
-	    #ifdef DEBUG_ARDUINO
 	    void printSerial();
-	    #endif
 
 
-	private:
 		bool GAME_BOARD[ROWS][COLS] = {{false, false, false, false, false},
 	                           		{false, false, false, false, false},
 	                           		{false, false, false, false, false},

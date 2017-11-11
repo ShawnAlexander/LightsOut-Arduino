@@ -70,10 +70,13 @@ bool Board::dot(bool (&g1)[ROWS][COLS], const bool (&g2)[ROWS][COLS]) {
     		temp[i][j] = multiply(g1[i][j], g2[i][j]);
     	}
     }
-    result = temp[0][0];
     for(byte i = 0; i < ROWS; ++i) {
     	for(byte j = 0; j < COLS; ++j) {
-    		result = add(result, temp[i][j]);
+            if(i == 0 && j == 0){
+                result = temp[0][0];
+            }else {
+                result = add(result, temp[i][j]);
+            }
     	}
     }
     return result;
