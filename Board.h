@@ -24,6 +24,7 @@ class Board {
 	public:
 		static const byte ROWS = 5;
 		static const byte COLS = 5;
+        static const byte AROWS = 25;
 		//Board();
 		void randomize(int);
 		void set(byte, bool);	/* Sets 1-indexed grid number to true/false without toggling adjacent squares */
@@ -34,11 +35,13 @@ class Board {
 	    bool isSolvable();
 	    bool add(bool, bool);
 	    bool multiply(bool, bool);
+        void mvm(bool(&)[AROWS][AROWS], bool(&)[AROWS], bool(&)[AROWS]);
+        void dot(bool(&)[AROWS], bool(&)[AROWS],bool(&)[AROWS]);
 		bool dot(bool(&)[ROWS][COLS], const bool(&)[ROWS][COLS]);
         void reset();
 
 	    void printConsole();
-	    void printSerial();
+	    //void printSerial();
 
 
 		bool GAME_BOARD[ROWS][COLS] = {{false, false, false, false, false},
@@ -61,5 +64,85 @@ class Board {
 	                           		 	 {true, false, true, false, true},
 	                           			 {true, false, true, false, true}};
 
+        const bool A[AROWS][AROWS] = {{true,true,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                                  {true,true,true,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                                  {false,true,true,true,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                                  {false,false,true,true,true,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                                  {false,false,false,true,true,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                                  {true,false,false,false,false,true,true,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                                  {false,true,false,false,false,true,true,true,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                                  {false,false,true,false,false,false,true,true,true,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false},
+                                  {false,false,false,true,false,false,false,true,true,true,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false},
+                                  {false,false,false,false,true,false,false,false,true,true,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false},
+                                  {false,false,false,false,false,true,false,false,false,false,true,true,false,false,false,true,false,false,false,false,false,false,false,false,false},
+                                  {false,false,false,false,false,false,true,false,false,false,true,true,true,false,false,false,true,false,false,false,false,false,false,false,false},
+                                  {false,false,false,false,false,false,false,true,false,false,false,true,true,true,false,false,false,true,false,false,false,false,false,false,false},
+                                  {false,false,false,false,false,false,false,false,true,false,false,false,true,true,true,false,false,false,true,false,false,false,false,false,false},
+                                  {false,false,false,false,false,false,false,false,false,true,false,false,false,true,true,false,false,false,false,true,false,false,false,false,false},
+                                  {false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,true,true,false,false,false,true,false,false,false,false},
+                                  {false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,true,true,true,false,false,false,true,false,false,false},
+                                  {false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,true,true,true,false,false,false,true,false,false},
+                                  {false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,true,true,true,false,false,false,true,false},
+                                  {false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,true,true,false,false,false,false,true},
+                                  {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,true,true,false,false,false},
+                                  {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,true,true,true,false,false},
+                                  {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,true,true,true,false},
+                                  {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,true,true,true},
+                                  {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,true,true}};
+        const bool R[AROWS][AROWS] = {{false,false,false,false,false,true,false,false,false,false,true,true,false,false,false,true,false,true,false,false,false,true,true,true,false},
+                                      {false,false,false,false,false,false,true,false,false,false,true,true,true,false,false,false,false,false,true,false,true,true,false,true,true},
+                                      {false,false,false,true,false,false,false,false,true,true,false,false,true,true,false,false,true,false,true,false,true,true,true,false,true},
+                                      {false,false,true,true,true,false,true,false,false,false,true,true,false,true,true,false,true,false,false,false,false,false,true,true,true},
+                                      {false,false,false,true,true,false,false,true,false,true,false,true,true,true,false,true,false,false,false,false,true,false,true,true,false},
+                                      {false,false,true,false,true,false,true,true,false,true,false,false,true,false,false,false,false,false,true,true,false,false,false,false,false},
+                                      {false,false,true,false,false,false,true,true,true,false,true,true,false,false,true,false,true,false,false,true,false,false,true,true,false},
+                                      {false,false,false,false,true,false,false,false,true,true,false,false,false,false,true,false,false,false,false,false,false,false,false,false,true},
+                                      {false,false,true,false,false,false,true,true,true,false,true,false,false,true,true,true,false,false,true,false,false,true,true,false,false},
+                                      {false,false,true,false,true,false,true,true,false,true,true,false,true,false,true,true,true,false,false,false,true,false,false,false,true},
+                                      {false,false,false,false,true,false,false,false,true,true,false,false,true,false,true,true,true,true,true,false,false,true,false,false,false},
+                                      {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,true,true,true,false,false},
+                                      {false,false,false,true,true,false,false,true,false,false,false,true,true,false,true,true,false,false,false,true,true,false,true,true,false},
+                                      {false,false,true,true,true,false,true,false,true,false,true,true,true,false,false,false,false,false,true,false,true,true,false,true,true},
+                                      {false,false,false,true,false,false,false,true,true,true,false,true,false,false,false,true,true,false,true,false,false,true,false,true,true},
+                                      {false,false,true,false,false,false,true,true,true,false,true,false,false,false,true,true,false,true,false,true,true,false,true,false,false},
+                                      {false,false,true,true,false,false,true,false,false,true,true,true,false,false,true,false,true,true,true,false,false,false,true,false,false},
+                                      {false,false,true,false,true,false,true,true,false,true,true,false,true,false,false,true,true,false,true,true,true,false,false,false,false},
+                                      {false,false,false,true,false,false,false,true,true,true,false,true,false,false,false,true,true,false,true,true,false,true,false,true,false},
+                                      {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true},
+                                      {false,false,false,true,true,false,false,true,false,false,false,true,true,false,true,true,false,true,false,true,true,true,false,false,false},
+                                      {false,false,true,true,true,false,true,false,true,false,true,true,true,false,false,false,false,false,false,false,true,true,true,false,false},
+                                      {false,false,false,true,false,false,false,true,true,true,false,true,false,false,false,true,true,false,true,true,false,true,false,false,false},
+                                      {true,false,true,false,true,true,false,true,false,true,false,false,false,false,false,true,false,true,false,true,true,false,true,false,true},
+                                      {false,true,true,true,false,true,false,true,false,true,true,true,false,true,true,true,false,true,false,true,false,true,true,true,false}};
+        const bool E[AROWS][AROWS] = {{true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true},
+                                      {false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false},
+                                      {false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true},
+                                      {false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false},
+                                      {false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true},
+                                      {false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true},
+                                      {false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                                      {false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true},
+                                      {false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                                      {false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true},
+                                      {false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false,true,false},
+                                      {false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,true,false},
+                                      {false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,false,false},
+                                      {false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,true,false},
+                                      {false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,true,false},
+                                      {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,true,true},
+                                      {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false},
+                                      {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,true,true},
+                                      {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false},
+                                      {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,true,true},
+                                      {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,false,false,true},
+                                      {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,false,true,false},
+                                      {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true},
+                                      {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false},
+                                      {false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false}};
+        const bool F[ROWS][COLS]= {{false,true,false,false,false},
+                                   {false,false,true,false,false},
+                                   {false,true,false,true,false},
+                                   {false,true,true,false,true},
+                                   {true,false,false,false,false}};
 };
 #endif

@@ -15,10 +15,14 @@ void Board::randomize(int choice) {
             }
         }
     }
+    /* Generates rounds number of ON lights. */
     else if(choice == 2) {
-        std::uniform_int_distribution<int> distribution(0,24);
+        std::uniform_int_distribution<int> distribution(1,25);
         int rounds = distribution(generator);
-
+        for (byte i = 0; i < (byte) rounds; ++i) {
+            int n = distribution(generator);
+            set((byte) n, true);
+        }
     }
     else if(choice == 3) {
 
@@ -74,6 +78,16 @@ bool Board::multiply(bool p1, bool p2) {
 		return false;
 	}
 }
+/* Matrix Vector Multiply */
+void Board::mvm(bool(&mat)[AROWS][AROWS], bool(&vec)[AROWS], bool (&result)[AROWS]) {
+
+}
+
+/* Same as below, except for vector representation of the matrix. */
+void Board::dot(bool(&v1)[AROWS], bool(&v2)[AROWS], bool(&result)[AROWS]) {
+
+}
+
 
 bool Board::dot(bool (&g1)[ROWS][COLS], const bool (&g2)[ROWS][COLS]) {
 	bool temp[ROWS][COLS] = {{false, false, false, false, false},
