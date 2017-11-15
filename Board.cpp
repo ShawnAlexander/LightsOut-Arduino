@@ -1,15 +1,11 @@
 #include "Board.h"
-/*
-Board::Board() {
-
-}*/
 
 void Board::randomize(int choice) {
 	/* Bernoulli - 50% chance for each */
     std::default_random_engine generator;
     if(choice == 1) {
         std::bernoulli_distribution distribution(0.5);
-        for (byte i = 1; i < (byte) 26; ++i) {
+        for (byte i = 0; i < (byte) 25; ++i) {
             if (distribution(generator)) {
                 set(i, true);
             }
@@ -17,7 +13,7 @@ void Board::randomize(int choice) {
     }
     /* Generates rounds number of ON lights. */
     else if(choice == 2) {
-        std::uniform_int_distribution<int> distribution(1,25);
+        std::uniform_int_distribution<int> distribution(0,24);
         int rounds = distribution(generator);
         for (byte i = 0; i < (byte) rounds; ++i) {
             int n = distribution(generator);
@@ -32,20 +28,16 @@ void Board::randomize(int choice) {
 }
 
 void Board::reset() {
-    for(byte row = 0; row < ROWS; ++row) {
-        for(byte col = 0; col < COLS; ++col) {
-            GAME_BOARD[row][col] = false;
-        }
+    for(byte row = 0; row < RC; ++row) {
+        GAME_BOARD[row] = false;
     }
 }
 
 bool Board::isWin() {
-	for(byte row = 0; row < ROWS; ++row) {
-		for(byte col = 0; col < COLS; ++col) {
-			if(GAME_BOARD[row][col]) {
-				return false;
-			}
-		}
+	for(byte row = 0; row < RC; ++row) {
+        if(GAME_BOARD[row]) {
+            return false;
+        }
 	}
 	return true;
 }
@@ -78,37 +70,31 @@ bool Board::multiply(bool p1, bool p2) {
 		return false;
 	}
 }
+
 /* Matrix Vector Multiply */
-void Board::mvm(bool(&mat)[AROWS][AROWS], bool(&vec)[AROWS], bool (&result)[AROWS]) {
-
-}
-
-/* Same as below, except for vector representation of the matrix. */
-void Board::dot(bool(&v1)[AROWS], bool(&v2)[AROWS], bool(&result)[AROWS]) {
-
-}
-
-
-bool Board::dot(bool (&g1)[ROWS][COLS], const bool (&g2)[ROWS][COLS]) {
-	bool temp[ROWS][COLS] = {{false, false, false, false, false},
-	           			  {false, false, false, false, false},
-	           			  {false, false, false, false, false},
-	           			  {false, false, false, false, false},
-	           			  {false, false, false, false, false}};
-    bool result = true;
-    for(byte i = 0; i < ROWS; ++i) {
-    	for(byte j = 0; j < COLS; ++j) {
-    		temp[i][j] = multiply(g1[i][j], g2[i][j]);
-    	}
+void Board::mvm(const bool(&mat)[RC][RC], bool(&vec)[RC], bool (&result)[RC]) {
+    for(byte i = 0; i < RC; ++i) {
+        result[i] = dot(mat[i], vec);
     }
-    for(byte i = 0; i < ROWS; ++i) {
-    	for(byte j = 0; j < COLS; ++j) {
-            if(i == 0 && j == 0){
-                result = temp[0][0];
-            }else {
-                result = add(result, temp[i][j]);
-            }
-    	}
+}
+
+/* 25x1 Vector Dot Product */
+bool Board::dot(const bool(&v1)[RC], bool(&v2)[RC]) {
+    bool temp[RC] = {false, false, false, false, false,
+                             false, false, false, false, false,
+                             false, false, false, false, false,
+                             false, false, false, false, false,
+                             false, false, false, false, false};
+    bool result = true;
+    for(byte i = 0; i < RC; ++i) {
+        temp[i] = multiply(v1[i], v2[i]);
+    }
+    for(byte i = 0; i < RC; ++i) {
+        if(i == 0){
+            result = temp[0];
+        }else {
+            result = add(result, temp[i]);
+        }
     }
     return result;
 }
@@ -119,8 +105,8 @@ bool Board::isSolvable() {
 	bool s1 = false;
 	bool s2 = false;
 
-	s1 = dot(GAME_BOARD, SOLVABLE1);
-	s2 = dot(GAME_BOARD, SOLVABLE2);
+	s1 = dot(SOLVABLE1, GAME_BOARD);
+	s2 = dot(SOLVABLE2, GAME_BOARD);
 
 	if(!s1 && !s2) {
 		return true;
@@ -130,133 +116,63 @@ bool Board::isSolvable() {
 	}
 }
 
-
-/* Row & Col are 0-indexed */
-void Board::set(byte row, byte col, bool state) {
-	GAME_BOARD[row][col] = state;
-}
-
-
+/* Sets 0-indexed grid number to true/false without toggling adjacent squares */
 void Board::set(byte gridNum, bool state) {
-
-	byte row = 0;
-	byte col = 0;
-
-	if(gridNum <= 5) {
-		row = 0;
-	}
-	else if(gridNum <= 10) {
-		row = 1;
-	}
-	else if(gridNum <= 15) {
-		row = 2;
-	}
-	else if(gridNum <= 20) {
-		row = 3;
-	}
-	else {
-		row = 4;
-	}
-
-	if(gridNum % 5 == 1) {
-		col = 0;
-	}
-	else if(gridNum % 5 == 2) {
-		col = 1;
-	}
-	else if(gridNum % 5 == 3) {
-		col = 2;
-	}
-	else if(gridNum % 5 == 4) {
-		col = 3;
-	}
-	else {
-		col = 4;
-	}
-
-	set(row, col, state);
+    GAME_BOARD[gridNum] = state;
 }
 
-/* Toggles square and adjacent squares */
-/* Parameters are 0-indexed */
-void Board::toggle(byte row, byte col) {
-	/* Error checking for valid range? */
-
-	GAME_BOARD[row][col] = !GAME_BOARD[row][col];
-
-	/* North adjacent */
-	if(row > 0) {
-		GAME_BOARD[row - 1][col] = !GAME_BOARD[row - 1][col];
-	}
-
-	/* East adjacent  */
-	if(col < 4) {
-		GAME_BOARD[row][col + 1] = !GAME_BOARD[row][col + 1];
-	}
-
-	/* South adjacent */
-	if(row < 4) {
-		GAME_BOARD[row + 1][col] = !GAME_BOARD[row + 1][col];
-	}
-	
-	/* West adjacent */
-	if(col > 0) {
-		GAME_BOARD[row][col - 1] = !GAME_BOARD[row][col - 1];
-	}
-}
-
-/* Toggles square and adjacent squares */
+/* Toggles 0-indexed square and adjacent squares. */
 void Board::toggle(byte gridNum) {
 	/* Error checking for valid range? */
+    /* Toggle the square itself. */
+    GAME_BOARD[gridNum] = !GAME_BOARD[gridNum];
 
-	byte row = 0;
-	byte col = 0;
+    /* North Adjacent only when row > 4 */
+    if(gridNum > FOUR){
+        GAME_BOARD[gridNum - FIVE] = !GAME_BOARD[gridNum - FIVE];
+    }
 
-	if(gridNum <= 5) {
-		row = 0;
-	}
-	else if(gridNum <= 10) {
-		row = 1;
-	}
-	else if(gridNum <= 15) {
-		row = 2;
-	}
-	else if(gridNum <= 20) {
-		row = 3;
-	}
-	else {
-		row = 4;
-	}
+    /* South adjacent only when row < 20 */
+    if(gridNum < TWENTY){
+        GAME_BOARD[gridNum + FIVE] = !GAME_BOARD[gridNum + FIVE];
+    }
 
-	if(gridNum % 5 == 1) {
-		col = 0;
-	}
-	else if(gridNum % 5 == 2) {
-		col = 1;
-	}
-	else if(gridNum % 5 == 3) {
-		col = 2;
-	}
-	else if(gridNum % 5 == 4) {
-		col = 3;
-	}
-	else {
-		col = 4;
-	}
+    /* East adjacent only when row MOD 5 != 4 */
+    if(gridNum % FIVE != FOUR) {
+        GAME_BOARD[gridNum + ONE] = !GAME_BOARD[gridNum + ONE];
+    }
 
-	toggle(row, col);
+    /* West adjacent only when row MOD 5 != 0 */
+    if(gridNum % FIVE != ZERO) {
+        GAME_BOARD[gridNum - ONE] = !GAME_BOARD[gridNum - ONE];
+    }
 }
 
 void Board::printConsole() {
-	for(byte i = 0; i < ROWS; ++i){
-		for(byte j = 0; j < COLS; ++j){
-			std::cout << "|";
-			if(GAME_BOARD[i][j]){
-				std::cout << " ON";
-			}else {
-				std::cout << "OFF";
-			}
-		}
-		std::cout << "|" << std::endl;
-	}
+    for(byte i = 0; i < RC; ++i){
+        if(GAME_BOARD[i]){
+            std::cout << "| ON";
+        }
+        else {
+            std::cout << "|OFF";
+        }
+        if(i % FIVE == 4) {
+            std::cout << "|" << std::endl;
+        }
+    }
+}
+
+void Board::printConsole(bool(&colvec)[RC]) {
+    for(byte i = 0; i < RC; ++i){
+        if(colvec[i]){
+            std::cout << "| ON";
+        }
+        else {
+            std::cout << "|OFF";
+        }
+        if(i % FIVE == 4) {
+            std::cout << "|" << std::endl;
+        }
+    }
+    std::cout << std::endl;
 }

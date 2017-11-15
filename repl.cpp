@@ -2,13 +2,46 @@
 
 #include <iostream>
 #include <cstdint>
+#include <string>
+#include <algorithm>
 #include "Board.h"
 
 using namespace std;
 
-int main(int argc, char **argv) {
+Board gb;
 
-    Board gb;
+void isSolvable(bool (&p)[(uint8_t) 25]) {
+    if(!gb.dot(gb.SOLVABLE1, p) && !gb.dot(gb.SOLVABLE2, p)) {
+        cout << "Solvable!" << endl;
+    }
+    else {
+        cout << "Not Solvable!" << endl;
+    }
+}
+
+void reset(bool (&p)[(uint8_t) 25]) {
+    for (uint8_t i = 0; i < (uint8_t) 25; ++i) {
+        p[i] = false;
+    }
+}
+
+void comb(int n, int r, int *arr, int sz) {
+    for (int i = n; i >= r; i --) {
+        arr[r - 1] = i;
+        if (r > 1) {
+            comb(i - 1, r - 1, arr, sz);
+        } else {
+            char OUT_STR[26] = "0000000000000000000000000";
+            for (int j = 0; j < sz; j++) {
+                OUT_STR[arr[j] - 1] = '1';
+            }
+            cout << OUT_STR << endl;
+        }
+    }
+}
+
+
+int main(int argc, char **argv) {
 
     const char BANNER[] = "\n"
             "\n"
@@ -25,11 +58,11 @@ int main(int argc, char **argv) {
             "     \\__\\/                  \\__\\/         \\__\\/                       \\__\\/                  \\__\\/         \\__\\/               ";
 
     const char INFO[] = "Commands\n\'q\' - Quit.\n\'n\' - New Game/Reset.\n\'i\' - Is Solvable?\n\'t\' - Run Tests.\n";
-    const char GRID[] = "| 1| 2| 3| 4| 5|\n"
-            "| 6| 7| 8| 9|10|\n"
-            "|11|12|13|14|15|\n"
-            "|16|17|18|19|20|\n"
-            "|21|22|23|24|25|";
+    const char GRID[] = "| 0| 1| 2| 3| 4|\n"
+            "| 5| 6| 7| 8| 9|\n"
+            "|10|11|12|13|14|\n"
+            "|15|16|17|18|19|\n"
+            "|20|21|22|23|24|";
 
     char buffer[2];
     bool persist = true;
@@ -77,6 +110,7 @@ int main(int argc, char **argv) {
                     }
                 }
                 else if(c == 't') {
+                    /*
                     if(!gb.add(false, false)) {
                         cout << "Test #1 Passed!" << endl;
                     }else{
@@ -96,32 +130,47 @@ int main(int argc, char **argv) {
                         cout << "Test #4 Passed!" << endl;
                     }else{
                         cout << "Test #4 Failed!" << endl;
-                    }
-                    bool solvable[gb.ROWS][gb.COLS] = {{false, true, false, false, false},
-                                             {false, false, true, false, false},
-                                             {false, true, false, true, false},
-                                             {false, true, true, false, true},
-                                             {true, false, false, false, false}};
-                    bool notsolvable1[gb.ROWS][gb.COLS] = {{true, false, false, true, false},
-                                                       {false, false, true, false, false},
-                                                       {false, true, true, false, true},
-                                                       {false, true, false, false, false},
-                                                       {true, false, false, false, false}};
+                    }*/
+                    bool solvable[gb.RC] = {false, true, false, false, false,
+                                             false, false, true, false, false,
+                                             false, true, false, true, false,
+                                             false, true, true, false, true,
+                                             true, false, false, false, false};
+                    bool notsolvable1[gb.RC] = {true, false, false, true, false,
+                                                       false, false, true, false, false,
+                                                       false, true, true, false, true,
+                                                       false, true, false, false, false,
+                                                       true, false, false, false, false};
 
-                    if(!gb.dot(solvable, gb.SOLVABLE1) && !gb.dot(solvable, gb.SOLVABLE2)) {
-                        cout << "Solvable! Test Passed!" << endl;
-                    }
-                    else {
-                        cout << "Not Solvable! Test Failed!" << endl;
-                    }
+                    isSolvable(solvable);
+                    isSolvable(notsolvable1);
 
-                    if(!gb.dot(notsolvable1, gb.SOLVABLE1) && !gb.dot(notsolvable1, gb.SOLVABLE2)) {
-                        cout << "Solvable! Test Failed!" << endl;
-                    }
-                    else {
-                        cout << "Not Solvable! Test Passed!" << endl;
-                    }
+                    bool temp[gb.RC] = {false, false, false, false, false,
+                                        false, false, false, false, false,
+                                        false, false, false, false, false,
+                                        false, false, false, false, false,
+                                        false, false, false, false, false};
+                    bool test[gb.RC] = {true, true, true, true, false,
+                                        false, false, false, false, false,
+                                        false, false, false, false, false,
+                                        false, false, false, false, false,
+                                        false, false, false, false, false};
 
+                    gb.mvm(gb.A, test, temp);
+                    gb.printConsole(temp);
+                    isSolvable(temp);
+                    reset(temp);
+                    cout << "Begin Solution Space Test!" << endl;
+                    for(int i = 1; i < 25; ++i) {
+                        int buf[i];
+                        comb(25, i, buf, i);
+                        cout << "WARNING! This procedure consumes a lot of time and space! Continue with next iteration?" << endl;
+                        cin.getline(buffer,2);
+                        char pe = buffer[0];
+                        if(!cin.good() || tolower(pe) != 'y'){
+                            break;
+                        }
+                    }
                 }
                 else {
                     cout << "Error! Invalid input!" << endl;
@@ -146,7 +195,5 @@ int main(int argc, char **argv) {
             exit(1);
         }
     }
-
-
     return 0;
 }
