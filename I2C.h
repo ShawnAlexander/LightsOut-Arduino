@@ -2,7 +2,8 @@
 #ifndef I2C_COMM_H
 #define I2C_COMM_H
 
-#include <Wire.h>
+#include "Wire.h"
+#include "Arduino.h"
 
 
 /*
@@ -17,81 +18,99 @@
 
 
 enum EVENT : byte {
-	/* THE EVENTS LISTED HERE MAP THE ENTIRE BYTE */
+  /* THE EVENTS LISTED HERE MAP THE ENTIRE BYTE */
 
-	/* TOGGLE EVENTS */
-	/* UPPER 3 BITS ARE 001 */
-	/* DECIMAL RANGE 33 - 57 */
-	TOGGLE1 = 33,
-	TOGGLE2 = 34,
-	TOGGLE3 = 35,
-	TOGGLE4 = 36,
-	TOGGLE5 = 37,
-	TOGGLE6 = 38,
-	TOGGLE7 = 39,
-	TOGGLE8 = 40,
-	TOGGLE9 = 41,
-	TOGGLE10 = 42,
-	TOGGLE11 = 43,
-	TOGGLE12 = 44,
-	TOGGLE13 = 45,
-	TOGGLE14 = 46,
-	TOGGLE15 = 47,
-	TOGGLE16 = 48,
-	TOGGLE17 = 49,
-	TOGGLE18 = 50,
-	TOGGLE19 = 51,
-	TOGGLE20 = 52,
-	TOGGLE21 = 53,
-	TOGGLE22 = 54,
-	TOGGLE23 = 55,
-	TOGGLE24 = 56,
-	TOGGLE25 = 57,
+  /* TOGGLE EVENTS */
+  /* UPPER 3 BITS ARE 001 */
+  /* DECIMAL RANGE 33 - 57 */
+  TOGGLE0 = 33,
+  TOGGLE1 = 34,
+  TOGGLE2 = 35,
+  TOGGLE3 = 36,
+  TOGGLE4 = 37,
+  TOGGLE5 = 38,
+  TOGGLE6 = 39,
+  TOGGLE7 = 40,
+  TOGGLE8 = 41,
+  TOGGLE9 = 42,
+  TOGGLE10 = 43,
+  TOGGLE11 = 44,
+  TOGGLE12 = 45,
+  TOGGLE13 = 46,
+  TOGGLE14 = 47,
+  TOGGLE15 = 48,
+  TOGGLE16 = 49,
+  TOGGLE17 = 50,
+  TOGGLE18 = 51,
+  TOGGLE19 = 52,
+  TOGGLE20 = 53,
+  TOGGLE21 = 54,
+  TOGGLE22 = 55,
+  TOGGLE23 = 56,
+  TOGGLE24 = 57,
 
-	/* BOOT EVENT */
-	BOOTSYNC = 64,
+  /* We use these for game reset. Implies board is all false, so we are setting to true. */
+  /* Do not toggle neighbors. */
+  SET0 = 58,
+  SET1 = 59,
+  SET2 = 60,
+  SET3 = 61,
+  SET4 = 62,
+  SET5 = 63,
+  SET6 = 64,
+  SET7 = 65,
+  SET8 = 66,
+  SET9 = 67,
+  SET10 = 68,
+  SET11 = 69,
+  SET12 = 70,
+  SET13 = 71,
+  SET14 = 72,
+  SET15 = 73,
+  SET16 = 74,
+  SET17 = 75,
+  SET18 = 76,
+  SET19 = 77,
+  SET20 = 78,
+  SET21 = 79,
+  SET22 = 80,
+  SET23 = 81,
+  SET24 = 82,
+  /* GAME WON */
+  WIN = 96,
 
-	/* GAME WON */
-	WIN = 96,
+  /* RESET/NEW GAME */
+  RESET = 160,
 
-	/* RESET/NEW GAME */
-	RESET = 160,
-
-	/* MASTER ERROR */
-	ERROR = 224
+  /* TRANSMISSION FINISH */
+  FIN = 170,
+  
+  /* MASTER ERROR */
+  M_ERROR = 224
 };
 
 
 class I2C_Slave {
-	public:
-		const byte SLAVE_ADDR = 27;
+  public:
+    const byte SLAVE_ADDR = 27;
 
-		/* Slave constructor (calls setup routines) 
-		   Uses internal callback */
-		I2C_Slave();
+    void init();
+    int available();
+    EVENT read();
 
-		/* Slave constructor that uses external callback */
-		I2C_Slave(void(*)(int));
-
-		/* Slave functions */
-		int available();
-		EVENT read();
-
-		/* Internal callback for I2C data received. 
-		   Ignore int parameter (how many bytes) and call available()
-		   Implement on your own */
-		void callback(int);
+    /* Internal callback for I2C data received.
+       Ignore int parameter (how many bytes) and call available()
+       Implement on your own */
+    static void callback(int);
 };
 
 class I2C_Master {
-	public:
-		const byte SLAVE_ADDR = 27;
-
-		/* Master constructor (calls setup routines) */
-		I2C_Master();
-
-		void write(EVENT);
+  public:
+    const byte SLAVE_ADDR = 27;
+    void init();
+    void write(EVENT);
 
 };
 
 #endif
+

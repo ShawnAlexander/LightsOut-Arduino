@@ -33,8 +33,28 @@ void Board::solve() {
 }
 
 /* Call reset before */
-void Board::randomize(int difficulty) {
-  unsigned long minMoves = 0;   //Number of 1-bits
+void Board::randomize() {
+  unsigned long minMoves = random(5, 25);
+  unsigned long randomBits = nrand25(minMoves);
+  unsigned long k;
+  bool TEMP[RC] = {false, false, false, false, false,
+                   false, false, false, false, false,
+                   false, false, false, false, false,
+                   false, false, false, false, false,
+                   false, false, false, false, false
+                  };
+  for (unsigned long i = 0; i < 25; ++i) {
+    k = 1 << i;
+    if (k & randomBits) {
+      TEMP[(byte) i] = true;
+    }
+  }
+  mvm(A, TEMP);
+}
+
+/*
+  void Board::randomize(int difficulty) {
+  unsigned long minMoves = 0;
   if (difficulty == 1) {
     minMoves = random(5, 11);
   }
@@ -74,8 +94,8 @@ void Board::randomize(int difficulty) {
       TEMP[(byte) i] = true;
     }
   }
-  mvm(A, TEMP); /* And now we have a solvable board. */
-}
+  mvm(A, TEMP);
+  }*/
 
 /* Excludes n, so call with n + 1. */
 int Board::randto(int n) {
@@ -112,7 +132,6 @@ void Board::reset() {
   for (byte row = 0; row < RC; ++row) {
     GAME_BOARD[row] = false;
   }
-
 }
 
 bool Board::isWin() {
@@ -252,6 +271,7 @@ void Board::printSerial() {
   }
   Serial.println();
 }
+
 
 
 

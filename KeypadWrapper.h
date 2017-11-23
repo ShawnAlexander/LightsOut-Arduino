@@ -1,30 +1,30 @@
 /*
- *
- *
- */
+  Pushing and holding any four buttons at the same time will trigger a new game.
+*/
 
 #ifndef KEYPADWRAPPER_H
 #define KEYPADWRAPPER_H
 
-#include <Keypad.h>
+#include "Keypad.h"
 
 class KeypadWrapper {
-    public:
-        KeypadWrapper();
-        KeypadWrapper(byte *row_pins, byte *col_pins);
-        int pollKeypad();
+  public:
+    KeypadWrapper();
+    KeypadWrapper(byte *, byte *);
+    int pollKeypad();
 
-    private:
-        byte ROW_PINS[5] = {2, 3, 4, 5, 6};
-        byte COL_PINS[5] = {7, 8, 9, 10, 11};
-        char KEY_MAP [5][5] = {{1, 2, 3, 4, 5},
-                               {6, 7, 8, 9, 10},
-                               {11, 12, 13, 14, 15},
-                               {16, 17, 18, 19, 20},
-                               {21, 22, 23, 24, 25}};
-        Keypad kpd;
-
+  private:
+    byte ROW_PINS[5] = {2, 3, 4, 5, 6};
+    byte COL_PINS[5] = {7, 8, 9, 10, 11};
+    char KEY_MAP [5][5] = {{'a', 'b', 'c', 'd', 'e'},
+      {'f', 'g', 'h', 'i', 'j'},
+      {'k', 'l', 'm', 'n', 'o'},
+      {'p', 'q', 'r', 's', 't'},
+      {'u', 'v', 'w', 'x', 'y'}
+    };
+    Keypad &kpd;
 };
 
 
-#endif //KEYPADWRAPPER_H
+#endif
+

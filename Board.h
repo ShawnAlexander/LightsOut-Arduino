@@ -23,7 +23,7 @@ class Board {
     static const byte ONE = 1;
     static const byte RC = 25;
 
-    void randomize(int);
+    void randomize();
     int randto(int);
     void shuffle(int *, int);
     unsigned long nrand25(int);
@@ -121,6 +121,7 @@ class Board {
     };
 };
 #endif
+
 
 
 
