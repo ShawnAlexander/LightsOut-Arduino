@@ -94,14 +94,9 @@ class I2C_Slave {
   public:
     const byte SLAVE_ADDR = 27;
 
-    void init();
+    void init(void(*callback)());
     int available();
     EVENT read();
-
-    /* Internal callback for I2C data received.
-       Ignore int parameter (how many bytes) and call available()
-       Implement on your own */
-    static void callback(int);
 };
 
 class I2C_Master {

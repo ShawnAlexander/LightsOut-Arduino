@@ -1,6 +1,6 @@
 #include "I2C.h"
 
-void I2C_Slave::init(){
+void I2C_Slave::init(void(*callback)()){
   Wire.begin(SLAVE_ADDR);
   Wire.onReceive(callback);  /* Register callback */
 }
@@ -11,10 +11,6 @@ int I2C_Slave::available() {
 
 EVENT I2C_Slave::read() {
   return (EVENT) Wire.read();
-}
-
-void I2C_Slave::callback(int numBytes) {
-  /* Implement me. */
 }
 
 void I2C_Master::init(){
